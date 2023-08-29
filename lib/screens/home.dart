@@ -1,3 +1,4 @@
+import 'package:calculadora_imc/pages/home/form_imc.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               children: [
-                Container(color: Colors.yellow),
+                const FormImcPage(),
                 Container(color: Colors.pink),
               ],
             ),

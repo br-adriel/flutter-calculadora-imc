@@ -1,8 +1,11 @@
 import 'package:calculadora_imc/classes/pessoa.dart';
+import 'package:calculadora_imc/repositories/pessoa_repository.dart';
 import 'package:flutter/material.dart';
 
 class FormImcPage extends StatefulWidget {
-  const FormImcPage({super.key});
+  final PessoaRepository pessoaRepository;
+
+  const FormImcPage(this.pessoaRepository, {super.key});
 
   @override
   State<FormImcPage> createState() => _FormImcPageState();

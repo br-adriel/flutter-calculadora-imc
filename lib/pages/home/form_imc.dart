@@ -1,5 +1,6 @@
 import 'package:calculadora_imc/classes/pessoa.dart';
 import 'package:calculadora_imc/repositories/pessoa_repository.dart';
+import 'package:calculadora_imc/widgets/dialog_imc.dart';
 import 'package:flutter/material.dart';
 
 class FormImcPage extends StatefulWidget {
@@ -24,6 +25,74 @@ class _FormImcPageState extends State<FormImcPage> {
     "peso": null,
   };
 
+  void _setNome(String value) {
+    _fieldErrors["nome"] = value.isEmpty ? "Preencha o campo Nome" : null;
+    if (mounted) {
+      setState(() {});
+      _nomeController.text = value;
+    }
+  }
+
+  void _setNomeTrim(String value) {
+    _setNome(value.trim());
+  }
+
+  void _setPeso(String value) {
+    _fieldErrors["peso"] = value.isEmpty ? "Preencha o campo Peso" : null;
+
+    double? novoValor = double.tryParse(value);
+    if (novoValor != null && novoValor >= 0) {
+      _peso = double.parse(novoValor.toStringAsFixed(1));
+    }
+    setState(() {});
+  }
+
+  void _setPesoSafe(String value) {
+    double? novoValor = double.tryParse(value);
+    if (novoValor == null) {
+      _pesoStringController.text = "0";
+      _peso = 0;
+    } else if (novoValor < 0) {
+      _pesoStringController.text = "0";
+      _peso = 0;
+    } else {
+      _pesoStringController.text = novoValor.toStringAsFixed(1);
+      _peso = double.parse(novoValor.toStringAsFixed(1));
+    }
+    setState(() {});
+  }
+
+  void _setAltura(String value) {
+    double? novoValor = double.tryParse(value);
+    if (novoValor != null && novoValor >= 0.2 && novoValor <= 2.7) {
+      setState(() {
+        _altura = double.parse(
+          novoValor.toStringAsFixed(2),
+        );
+      });
+    }
+  }
+
+  void _setAlturaSafe(String value) {
+    double? novoValor = double.tryParse(value);
+    if (novoValor == null) {
+      _alturaStringController.text = "1.50";
+      _altura = 1.5;
+    } else if (novoValor < 0.2) {
+      _alturaStringController.text = "0.2";
+      _altura = 0.2;
+    } else if (novoValor > 2.7) {
+      _alturaStringController.text = "2.7";
+      _altura = 2.7;
+    } else {
+      _alturaStringController.text = novoValor.toStringAsFixed(2);
+      _altura = double.parse(
+        novoValor.toStringAsFixed(2),
+      );
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -33,20 +102,8 @@ class _FormImcPageState extends State<FormImcPage> {
         TextField(
           textInputAction: TextInputAction.next,
           controller: _nomeController,
-          onChanged: (value) {
-            _fieldErrors["nome"] =
-                value.isEmpty ? "Preencha o campo Nome" : null;
-            if (mounted) {
-              setState(() {});
-            }
-          },
-          onSubmitted: (value) {
-            if (mounted) {
-              setState(() {
-                _nomeController.text = value.trim();
-              });
-            }
-          },
+          onChanged: _setNome,
+          onSubmitted: _setNomeTrim,
           decoration: InputDecoration(
             labelText: "Nome",
             border: const OutlineInputBorder(
@@ -59,29 +116,8 @@ class _FormImcPageState extends State<FormImcPage> {
         TextField(
           textInputAction: TextInputAction.next,
           controller: _pesoStringController,
-          onChanged: (value) {
-            _fieldErrors["peso"] =
-                value.isEmpty ? "Preencha o campo Peso" : null;
-            if (mounted) {
-              setState(() {});
-            }
-          },
-          onSubmitted: (value) {
-            double? novoValor = double.tryParse(value);
-            if (novoValor == null) {
-              _pesoStringController.text = "0";
-              _peso = 0;
-            } else if (novoValor < 0) {
-              _pesoStringController.text = "0";
-              _peso = 0;
-            } else {
-              _pesoStringController.text = novoValor.toStringAsFixed(1);
-              _peso = double.parse(novoValor.toStringAsFixed(1));
-            }
-            if (mounted) {
-              setState(() {});
-            }
-          },
+          onChanged: _setPeso,
+          onSubmitted: _setPesoSafe,
           decoration: InputDecoration(
             labelText: "Peso",
             hintText: "65.4",
@@ -115,28 +151,8 @@ class _FormImcPageState extends State<FormImcPage> {
                       child: TextField(
                         textInputAction: TextInputAction.done,
                         controller: _alturaStringController,
-                        onSubmitted: (value) {
-                          double? novoValor = double.tryParse(value);
-                          if (novoValor == null) {
-                            _alturaStringController.text = "1.50";
-                            _altura = 1.5;
-                          } else if (novoValor < 0.2) {
-                            _alturaStringController.text = "0.2";
-                            _altura = 0.2;
-                          } else if (novoValor > 2.7) {
-                            _alturaStringController.text = "2.7";
-                            _altura = 2.7;
-                          } else {
-                            _alturaStringController.text =
-                                novoValor.toStringAsFixed(2);
-                            _altura = double.parse(
-                              novoValor.toStringAsFixed(2),
-                            );
-                          }
-                          if (mounted) {
-                            setState(() {});
-                          }
-                        },
+                        onChanged: _setAltura,
+                        onSubmitted: _setAlturaSafe,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -154,13 +170,11 @@ class _FormImcPageState extends State<FormImcPage> {
               Slider(
                 value: _altura,
                 onChanged: (value) {
-                  if (mounted) {
-                    setState(() {
-                      String novoValorString = value.toStringAsFixed(2);
-                      _altura = double.parse(novoValorString);
-                      _alturaStringController.text = novoValorString;
-                    });
-                  }
+                  setState(() {
+                    String novoValorString = value.toStringAsFixed(2);
+                    _altura = double.parse(novoValorString);
+                    _alturaStringController.text = novoValorString;
+                  });
                 },
                 max: 2.7,
                 min: 0.2,
@@ -170,30 +184,37 @@ class _FormImcPageState extends State<FormImcPage> {
         ),
         const SizedBox(height: 8),
         TextButton(
-          onPressed: () {
-            if (_nomeController.text.isEmpty && mounted) {
-              setState(() {
-                _fieldErrors['nome'] = "Preencha o campo Nome";
-              });
+          onPressed: () async {
+            if (mounted) {
+              _setNomeTrim(_nomeController.text);
+              _setPesoSafe(_pesoStringController.text);
+              _setAlturaSafe(_alturaStringController.text);
+            }
+
+            if (_nomeController.text.isEmpty ||
+                _pesoStringController.text.isEmpty) {
               return;
             }
-            if (_pesoStringController.text.isEmpty && mounted) {
-              setState(() {
-                _fieldErrors['nome'] = "Preencha o campo Peso";
-              });
-              return;
-            }
+
             Pessoa p = Pessoa(_nomeController.text, _altura, _peso);
             widget.pessoaRepository.addPessoa(p);
 
-            showDialog(
+            await showDialog(
               context: context,
               builder: (BuildContext bc) {
-                return Dialog(
-                  child: Text(p.imc.toString()),
-                );
+                return DialogIMC(p.imc);
               },
             );
+
+            if (mounted) {
+              setState(() {
+                _nomeController.text = "";
+                _alturaStringController.text = "1.50";
+                _altura = 1.5;
+                _peso = 0;
+                _pesoStringController.text = "";
+              });
+            }
           },
           style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.deepPurple),

@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+
 class Pessoa {
+  final String _id = UniqueKey().toString();
   double _altura = 0.0;
   String _nome = "";
   double _peso = 0.0;
@@ -42,5 +45,9 @@ class Pessoa {
     if (novoPeso > 0) {
       _peso = novoPeso;
     }
+  }
+
+  String get id {
+    return _id;
   }
 }

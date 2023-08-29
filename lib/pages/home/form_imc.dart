@@ -19,6 +19,10 @@ class _FormImcPageState extends State<FormImcPage> {
   final TextEditingController _nomeController = TextEditingController(text: "");
   final TextEditingController _pesoStringController =
       TextEditingController(text: "");
+  final Map<String, String?> _fieldErrors = {
+    "nome": null,
+    "peso": null,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +33,13 @@ class _FormImcPageState extends State<FormImcPage> {
         TextField(
           textInputAction: TextInputAction.next,
           controller: _nomeController,
+          onChanged: (value) {
+            _fieldErrors["nome"] =
+                value.isEmpty ? "Preencha o campo Nome" : null;
+            if (mounted) {
+              setState(() {});
+            }
+          },
           onSubmitted: (value) {
             if (mounted) {
               setState(() {
@@ -36,17 +47,25 @@ class _FormImcPageState extends State<FormImcPage> {
               });
             }
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: "Nome",
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
+            errorText: _fieldErrors['nome'],
           ),
         ),
         const SizedBox(height: 8),
         TextField(
           textInputAction: TextInputAction.next,
           controller: _pesoStringController,
+          onChanged: (value) {
+            _fieldErrors["peso"] =
+                value.isEmpty ? "Preencha o campo Peso" : null;
+            if (mounted) {
+              setState(() {});
+            }
+          },
           onSubmitted: (value) {
             double? novoValor = double.tryParse(value);
             if (novoValor == null) {
@@ -63,13 +82,14 @@ class _FormImcPageState extends State<FormImcPage> {
               setState(() {});
             }
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: "Peso",
             hintText: "65.4",
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
-            suffix: Text("Kg"),
+            errorText: _fieldErrors["peso"],
+            suffix: const Text("Kg"),
           ),
         ),
         const SizedBox(height: 8),
@@ -109,8 +129,9 @@ class _FormImcPageState extends State<FormImcPage> {
                           } else {
                             _alturaStringController.text =
                                 novoValor.toStringAsFixed(2);
-                            _altura =
-                                double.parse(novoValor.toStringAsFixed(2));
+                            _altura = double.parse(
+                              novoValor.toStringAsFixed(2),
+                            );
                           }
                           if (mounted) {
                             setState(() {});
@@ -150,16 +171,21 @@ class _FormImcPageState extends State<FormImcPage> {
         const SizedBox(height: 8),
         TextButton(
           onPressed: () {
-            if (_nomeController.text.isEmpty) {
+            if (_nomeController.text.isEmpty && mounted) {
+              setState(() {
+                _fieldErrors['nome'] = "Preencha o campo Nome";
+              });
               return;
             }
-            if (_pesoStringController.text.isEmpty) {
-              return;
-            }
-            if (_alturaStringController.text.isEmpty) {
+            if (_pesoStringController.text.isEmpty && mounted) {
+              setState(() {
+                _fieldErrors['nome'] = "Preencha o campo Peso";
+              });
               return;
             }
             Pessoa p = Pessoa(_nomeController.text, _altura, _peso);
+            widget.pessoaRepository.addPessoa(p);
+
             showDialog(
               context: context,
               builder: (BuildContext bc) {

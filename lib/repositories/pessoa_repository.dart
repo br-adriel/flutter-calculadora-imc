@@ -3,7 +3,7 @@ import 'package:calculadora_imc/classes/pessoa.dart';
 class PessoaRepository {
   List<Pessoa> _pessoas = [];
 
-  get pessoas {
+  List<Pessoa> get pessoas {
     return _pessoas;
   }
 

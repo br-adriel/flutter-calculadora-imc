@@ -117,6 +117,7 @@ class _FormImcPageState extends State<FormImcPage> {
           controller: _pesoStringController,
           onChanged: _setPeso,
           onSubmitted: _setPesoSafe,
+          keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             labelText: "Peso",
             hintText: "65.4",

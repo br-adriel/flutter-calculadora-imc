@@ -8,7 +8,7 @@ class PessoaRepository {
   }
 
   void addPessoa(Pessoa p) {
-    _pessoas.add(p);
+    _pessoas.insert(0, p);
   }
 
   void removePessoa(String id) {

@@ -111,14 +111,14 @@ class _HistoryPageState extends State<HistoryPage> {
                     children: [
                       const Icon(Icons.balance),
                       const SizedBox(width: 4),
-                      Text("${pessoa.peso} Kg"),
+                      Text("${pessoa.peso.toStringAsFixed(1)} Kg"),
                     ],
                   ),
                   Row(
                     children: [
                       const Icon(Icons.height),
                       const SizedBox(width: 4),
-                      Text("${pessoa.altura} m"),
+                      Text("${pessoa.altura.toStringAsFixed(2)} m"),
                     ],
                   ),
                 ],

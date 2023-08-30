@@ -98,7 +98,6 @@ class _FormImcPageState extends State<FormImcPage> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Expanded(child: Container()),
         TextField(
           textInputAction: TextInputAction.next,
           controller: _nomeController,
@@ -220,6 +219,11 @@ class _FormImcPageState extends State<FormImcPage> {
             backgroundColor: MaterialStatePropertyAll(Colors.deepPurple),
             padding: MaterialStatePropertyAll(
               EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            ),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
             ),
           ),
           child: const Text(

@@ -67,6 +67,7 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
           onDismissed: (direction) {
             widget.pessoaRepository.removePessoa(pessoa.id);
+            setState(() {});
           },
           key: Key(pessoa.id),
           child: Container(

@@ -32,7 +32,7 @@ class DismissibleHistoryItem extends StatelessWidget {
         ),
       ),
       onDismissed: onDismissed,
-      key: Key(imc.id.toString()),
+      key: UniqueKey(),
       child: Container(
         padding: const EdgeInsets.only(bottom: 16),
         decoration: const BoxDecoration(

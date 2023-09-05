@@ -47,9 +47,9 @@ class _HistoryPageState extends State<HistoryPage> {
               },
             );
           },
-          onDismissed: (direction) {
-            _imcRepository.deleteOne(imc.id);
-            setState(() {});
+          onDismissed: (direction) async {
+            await _imcRepository.deleteOne(imc.id);
+            _carregarImcs();
           },
         );
       },

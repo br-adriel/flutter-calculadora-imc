@@ -7,4 +7,6 @@ class IMCModel {
   IMCModel(this._id, this.altura, this.nome, this.peso);
 
   int get id => _id;
+
+  double get value => peso / (altura * altura);
 }

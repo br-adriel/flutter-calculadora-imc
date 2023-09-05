@@ -1,8 +1,10 @@
+import 'package:calculadora_imc/database/sqlite.dart';
 import 'package:calculadora_imc/screens/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
+  await SQLiteDatabase().iniciarBancoDeDados();
   runApp(const MainApp());
 }
 

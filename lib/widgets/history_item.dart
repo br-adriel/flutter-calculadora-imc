@@ -1,11 +1,11 @@
-import 'package:calculadora_imc/classes/pessoa.dart';
+import 'package:calculadora_imc/models/Imc.dart';
 import 'package:calculadora_imc/utils/imc.dart';
 import 'package:flutter/material.dart';
 
 class HistoryItem extends StatelessWidget {
-  final Pessoa pessoa;
+  final IMCModel imc;
 
-  const HistoryItem(this.pessoa, {super.key});
+  const HistoryItem(this.imc, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,11 @@ class HistoryItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              Imc.getStatus(pessoa.imc),
+              Imc.getStatus(imc.value),
               style: const TextStyle(fontSize: 18),
             ),
             Text(
-              pessoa.imc.toStringAsFixed(1),
+              imc.value.toStringAsFixed(1),
               style: const TextStyle(fontSize: 18),
             ),
           ],
@@ -33,21 +33,21 @@ class HistoryItem extends StatelessWidget {
             children: [
               const Icon(Icons.person),
               const SizedBox(width: 4),
-              Text(pessoa.nome),
+              Text(imc.nome),
             ],
           ),
           Row(
             children: [
               const Icon(Icons.balance),
               const SizedBox(width: 4),
-              Text("${pessoa.peso.toStringAsFixed(1)} Kg"),
+              Text("${imc.peso.toStringAsFixed(1)} Kg"),
             ],
           ),
           Row(
             children: [
               const Icon(Icons.height),
               const SizedBox(width: 4),
-              Text("${pessoa.altura.toStringAsFixed(2)} m"),
+              Text("${imc.altura.toStringAsFixed(2)} m"),
             ],
           ),
         ],

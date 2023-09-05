@@ -1,18 +1,17 @@
-import 'package:calculadora_imc/classes/pessoa.dart';
-import 'package:calculadora_imc/repositories/pessoa_repository.dart';
+import 'package:calculadora_imc/models/Imc.dart';
+import 'package:calculadora_imc/repositories/imc_repository.dart';
 import 'package:calculadora_imc/widgets/dialog_imc.dart';
 import 'package:flutter/material.dart';
 
 class FormImcPage extends StatefulWidget {
-  final PessoaRepository pessoaRepository;
-
-  const FormImcPage(this.pessoaRepository, {super.key});
+  const FormImcPage({super.key});
 
   @override
   State<FormImcPage> createState() => _FormImcPageState();
 }
 
 class _FormImcPageState extends State<FormImcPage> {
+  final IMCRepository imcRepository = IMCRepository();
   double _altura = 1.5;
   double _peso = 0;
   final TextEditingController _alturaStringController =
@@ -196,13 +195,13 @@ class _FormImcPageState extends State<FormImcPage> {
               return;
             }
 
-            Pessoa p = Pessoa(_nomeController.text, _altura, _peso);
-            widget.pessoaRepository.addPessoa(p);
+            IMCModel imc = IMCModel(0, _altura, _nomeController.text, _peso);
+            imcRepository.saveOne(imc);
 
             await showDialog(
               context: context,
               builder: (BuildContext bc) {
-                return DialogIMC(p.imc);
+                return DialogIMC(imc.value);
               },
             );
 

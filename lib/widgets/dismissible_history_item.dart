@@ -1,14 +1,14 @@
-import 'package:calculadora_imc/classes/pessoa.dart';
+import 'package:calculadora_imc/models/Imc.dart';
 import 'package:calculadora_imc/widgets/history_item.dart';
 import 'package:flutter/material.dart';
 
 class DismissibleHistoryItem extends StatelessWidget {
-  final Pessoa pessoa;
+  final IMCModel imc;
   final Future<bool> Function(DismissDirection)? confirmDismiss;
   final DismissDirection? direction;
   final void Function(DismissDirection)? onDismissed;
 
-  const DismissibleHistoryItem(this.pessoa,
+  const DismissibleHistoryItem(this.imc,
       {super.key, this.confirmDismiss, this.direction, this.onDismissed});
 
   @override
@@ -32,7 +32,7 @@ class DismissibleHistoryItem extends StatelessWidget {
         ),
       ),
       onDismissed: onDismissed,
-      key: Key(pessoa.id),
+      key: Key(imc.id.toString()),
       child: Container(
         padding: const EdgeInsets.only(bottom: 16),
         decoration: const BoxDecoration(
@@ -43,7 +43,7 @@ class DismissibleHistoryItem extends StatelessWidget {
             ),
           ),
         ),
-        child: HistoryItem(pessoa),
+        child: HistoryItem(imc),
       ),
     );
   }

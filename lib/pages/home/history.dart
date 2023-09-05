@@ -1,22 +1,34 @@
-import 'package:calculadora_imc/classes/pessoa.dart';
-import 'package:calculadora_imc/repositories/pessoa_repository.dart';
+import 'package:calculadora_imc/models/Imc.dart';
+import 'package:calculadora_imc/repositories/imc_repository.dart';
 import 'package:calculadora_imc/widgets/dialog_clear_history.dart';
 import 'package:calculadora_imc/widgets/dismissible_history_item.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
-  final PessoaRepository pessoaRepository;
-
-  const HistoryPage(this.pessoaRepository, {super.key});
+  const HistoryPage({super.key});
 
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  final IMCRepository _imcRepository = IMCRepository();
+  List<IMCModel> _imcs = [];
+
+  Future<void> _carregarImcs() async {
+    _imcs = await _imcRepository.getData();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarImcs();
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.pessoaRepository.pessoas.isEmpty) {
+    if (_imcs.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(16),
         child: Center(child: Text("Nenhum IMC foi calculado ainda")),
@@ -24,9 +36,9 @@ class _HistoryPageState extends State<HistoryPage> {
     }
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        Pessoa pessoa = widget.pessoaRepository.pessoas[index];
+        IMCModel imc = _imcs[index];
         return DismissibleHistoryItem(
-          pessoa,
+          imc,
           confirmDismiss: (direction) async {
             return await showDialog(
               context: context,
@@ -36,12 +48,12 @@ class _HistoryPageState extends State<HistoryPage> {
             );
           },
           onDismissed: (direction) {
-            widget.pessoaRepository.removePessoa(pessoa.id);
+            _imcRepository.deleteOne(imc.id);
             setState(() {});
           },
         );
       },
-      itemCount: widget.pessoaRepository.pessoas.length,
+      itemCount: _imcs.length,
     );
   }
 }

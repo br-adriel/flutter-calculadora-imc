@@ -1,6 +1,5 @@
 import 'package:calculadora_imc/pages/home/form_imc.dart';
 import 'package:calculadora_imc/pages/home/history.dart';
-import 'package:calculadora_imc/repositories/pessoa_repository.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,8 +10,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  PessoaRepository pessoaRepository = PessoaRepository();
-
   int _paginaAtual = 0;
   String _titulo = "Calculadora de IMC";
   final PageController _pageController = PageController(initialPage: 0);
@@ -38,9 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   _titulo = _titulos[value] ?? "";
                 });
               },
-              children: [
-                FormImcPage(pessoaRepository),
-                HistoryPage(pessoaRepository),
+              children: const [
+                FormImcPage(),
+                HistoryPage(),
               ],
             ),
           ),

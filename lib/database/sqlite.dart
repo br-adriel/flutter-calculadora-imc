@@ -2,7 +2,12 @@ import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart';
 
 Map<int, String> scripts = {
-  1: '''CREATE TABLE imc (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, altura REAL);''',
+  1: '''CREATE TABLE imc (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT,
+      altura REAL,
+      peso REAL
+    );''',
 };
 
 class SQLiteDatabase {

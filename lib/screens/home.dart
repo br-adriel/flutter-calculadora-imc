@@ -1,5 +1,6 @@
 import 'package:calculadora_imc/pages/home/form_imc.dart';
 import 'package:calculadora_imc/pages/home/history.dart';
+import 'package:calculadora_imc/screens/info.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_titulo),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return const InfoScreen();
+                },
+              ));
+            },
+            icon: const Icon(Icons.info_outline_rounded),
+          ),
+        ],
       ),
       body: Column(
         children: [
